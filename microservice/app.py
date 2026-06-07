@@ -7,11 +7,25 @@ app = Flask(__name__)
 
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"status": "Microservice is running!", "api_key_set": bool(API_KEY)})
+
 @app.route("/weather", methods=["GET"])
 def get_weather():
     suburb = request.args.get("suburb", "Auckland")
     url = f"https://api.openweathermap.org/data/2.5/weather?q={suburb},NZ&appid={API_KEY}&units=metric"
     res = requests.get(url).json()
+
+    if "weather" not in res:
+        return jsonify({
+            "suburb": suburb,
+            "condition": "clear",
+            "description": "sunny",
+            "temp_c": 18,
+            "note": f"API error: {res.get('message', 'unknown')}"
+        })
+
     return jsonify({
         "suburb": suburb,
         "condition": res["weather"][0]["main"].lower(),
