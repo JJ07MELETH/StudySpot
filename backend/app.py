@@ -9,6 +9,10 @@ CORS(app)
 
 MICROSERVICE_URL = os.getenv("MICROSERVICE_URL", "http://localhost:5001")
 
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"status": "Backend is running!", "microservice": MICROSERVICE_URL})
+
 @app.route("/api/spots", methods=["GET"])
 def get_spots():
     suburb = request.args.get("suburb", "Auckland")
