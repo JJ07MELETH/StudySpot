@@ -4,7 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// getElementById can return null, so TypeScript makes us check it exists
+// before handing it to React.
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error("Root element '#root' not found in index.html");
+}
+
+const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <App />
