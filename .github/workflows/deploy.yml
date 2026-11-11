@@ -65,6 +65,12 @@ jobs:
           cd frontend
           npm install
 
+      - name: Type check and test frontend
+        run: |
+          cd frontend
+          npx tsc --noEmit
+          CI=true npm test
+
       - name: Build frontend
         run: |
           cd frontend
